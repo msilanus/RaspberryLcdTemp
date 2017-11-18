@@ -1,4 +1,4 @@
-# Mesure de distance 
+# Mesure de Température 
 
 La mesure s'effectue au moyen d'un capteur de température 18B20 de chez Dalla et l'affichage est réalisé sur écran LCD RGB i2c 16x2 sur une Raspberry.
 
