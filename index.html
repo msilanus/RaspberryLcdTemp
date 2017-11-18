@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<script>
+  // helper function: log message to screen
+  var msg, temp; 
+  function log(msg) 
+  {
+    document.getElementById('log').innerHTML += msg + "<br>\n";
+  };
+  function mesure(msg) 
+  {
+    temp = msg.split('|');
+    document.getElementById("mesure").style.fontSize = "30px";
+    document.getElementById('mesure').innerHTML = temp[1] ;
+  };
+  
+  function get_appropriate_ws_url()
+  {
+	var pcol;
+	var u = document.URL;
+
+	/*
+	 * We open the websocket encrypted if this page came on an
+	 * https:// url itself, otherwise unencrypted
+	 */
+
+	if (u.substring(0, 5) == "https") {
+		pcol = "wss://";
+		u = u.substr(8);
+	} else {
+		pcol = "ws://";
+		if (u.substring(0, 4) == "http")
+			u = u.substr(7);
+	}
+
+	u = u.split('/');
+
+	/* + "/xxx" bit is for IE10 workaround */
+
+	return pcol + u[0] + "/xxx";
+  }
+  
+
+  // setup websocket with callbacks
+  var ws = new WebSocket(get_appropriate_ws_url());
+  ws.onopen = function() {
+    log('CONNECT');
+  };
+  ws.onclose = function() {
+    log('DISCONNECT');
+  };
+  ws.onmessage = function(event) {
+    msg = event.data;
+    log(msg);
+    mesure(msg);
+  };
+
+  
+</script>
+
+
+<HTML>
+<HEAD>
+
+<style>
+body {
+	background-color : black;
+	color : white;
+	font-family : Arial, Helvetica, sans-serif;
+}
+div {
+	font-size : 75%;
+}
+</style>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   	<TITLE>Mon objet connect&eacute;</TITLE>
+	
+</HEAD>
+
+<BODY>
+<center><h1>Mesure de Température</h1>
+	<p>
+	<p>
+	<p><b><div id='mesure'></div></b>
+</center>
+<p>
+<p>
+<p>
+<h2>&nbsp;&nbsp Historique :</h2>
+<div id='log'></div>
+</body>
+</html>
+
